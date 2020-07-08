@@ -1,4 +1,6 @@
 from room import Room
+from player import Player
+from textwrap import TextWrapper
 
 # Declare all the rooms
 
@@ -33,9 +35,12 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
+
+# print("This is the test", type(room['foyer']))
 #
 # Main
 #
+# player1 = Player('sean', 'outside')
 
 # Make a new player object that is currently in the 'outside' room.
 
@@ -49,3 +54,27 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def adventure_game():
+    player_name = input(f"\n Tell us your name, Player! \n Your name : ")
+    current_player = Player(player_name, "outside")
+    playing = True
+    print(f"Hi {current_player.name}! Explore rooms and find treasure.")
+
+    while(playing):
+        wrapper = TextWrapper(width=70)
+        room_description = wrapper.wrap(
+            text=room[current_player.current_room].description)
+
+        print(f"\nCurrent Room: \n {current_player.current_room}\n")
+        print(f"Room Description:")
+        for every_line in room_description:
+            print(every_line)
+        action = input(f"Where do you want to go? (Use: n, e, s, or w) :")
+    # print(f"Your are currently in {player1.current_room}")
+    # if player1.current_room == 'outside':
+    #     print(room['outside'].description)
+
+
+adventure_game()
