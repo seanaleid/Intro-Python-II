@@ -55,7 +55,6 @@ room['treasure'].s_to = room['narrow']
 #
 # If the user enters "q", quit the game.
 
-
 def adventure_game():
     # Prompt the user to type their name. 
     player_name = input(f"\n Tell us your name, Player! \n Your name : ")
@@ -78,18 +77,106 @@ def adventure_game():
         print(f"\n Room Description: \n")
         for every_line in room_description:
             print(every_line)
-        action = input(f"""Where do you want to go? (Use: n, e, s, or w. \n
+        action = input(f"""Where do you want to go? (Use: n, e, s, or w). \n
 Type 'help' for a hint) : """)
 
         if action == 'help':
             print(f"""Type 'n' to move North, 'e' to move East, 'w' to move West,
 's' to move South, 'help' for hints, or 'q' to end the game""")
+            action
 
-        elif action == 'q':
+        if action == 'q':
             exit()
-    # print(f"Your are currently in {player1.current_room}")
-    # if player1.current_room == 'outside':
-    #     print(room['outside'].description)
+
+        if action == 'n':
+            if current_player.current_room == "outside":
+                current_player.current_room = "foyer"
+                action
+            elif current_player.current_room == "foyer":
+                current_player.current_room = "overlook"
+                action
+            elif current_player.current_room == "narrow":
+                current_player.current_room = "treasure"
+                action
+            else:
+                print(f"You can't go that way! Try again!")
+                action
+
+        if action == 'e':
+            if current_player.current_room == "foyer":
+                current_player.current_room = "narrow"
+                action
+            else:
+                print(f"You can't go that way! Try again!")
+                action
+        
+        if action == 's':
+            if current_player.current_room == "treasure":
+                current_player.current_room = "narrow"
+                action
+            elif current_player.current_room == "overlook":
+                current_player.current_room = "foyer"
+                action
+            elif current_player.current_room == "foyer":
+                current_player.current_room = "outside"
+                action
+            else:
+                print(f"You can't go that way! Try again!")
+                action
+
+        if action == 'w':
+            if current_player.current_room == "narrow":
+                current_player.current_room = "foyer"
+                action
+            else:
+                print(f"You can't go that way! Try again!")
+                action
 
 
 adventure_game()
+
+
+# def adventure_game():
+#     # Prompt the user to type their name. 
+#     player_name = input(f"\n Tell us your name, Player! \n Your name : ")
+#     # Creates the Player instance
+#     current_player = Player(player_name, room["outside"])
+#     # Triggers the while loop below
+#     playing = True
+#     # Short message to the player
+#     print(f"\n Hi {current_player.name}! Explore rooms and find treasure.")
+
+#     while(playing):
+#         # Allows me to access the dictionary and limit the text per line
+#         wrapper = TextWrapper(width=70)
+#         room_description = wrapper.wrap(
+#             text=room[current_player.current_room].description)
+
+#         # Shows the player which room they are in and the desc.
+#         # Defaults to 'outside' on line 63
+#         print(f"\n Current Room: \n {current_player.current_room}\n")
+#         print(f"\n Room Description: \n")
+#         for every_line in room_description:
+#             print(every_line)
+#         action = input(f"""Where do you want to go? (Use: n, e, s, or w). \n
+# Type 'help' for a hint) : """)
+
+#         if action == 'help':
+#             print(f"""Type 'n' to move North, 'e' to move East, 'w' to move West,
+# 's' to move South, 'help' for hints, or 'q' to end the game""")
+
+#         elif action == 'q':
+#             exit()
+        
+#         elif action == 'n':
+#             if current_player.current_room == room["outside"]:
+#                 current_player.current_room == room["outside"].n_to
+#                 # Room.n_to == room["foyer"]
+#                 action
+#             elif current_player.current_room == room["foyer"]:
+#                 current_player.current_room == room["overlook"].n_to
+#                 # Room.n_to == room["overlook"]
+#                 action
+#             elif current_player.current_room == room["overlook"]:
+#                 print(f"Sorry, you can't go that way. Try again")
+#                 action
