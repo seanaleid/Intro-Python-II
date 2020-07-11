@@ -6,26 +6,28 @@ class Room:
         self.roomID = roomID
         self.name = name
         self.description = description
-        self.items = []
+        self.items = items
 
     def look(self):
         foundItems = []
-
         for item in self.items:
-            itemName = item[0]
-            print(f"You found {itemName}")
-            choice = input(f"Do you want to take it? y/n ")
+            # itemName = item
+            print(f"\n\tYou found {item}")
+            choice = input(f"\n\tDo you want to take it? y/n ")
 
             if choice == 'y':
-                print(f"{itemName} added to your inventory")
-                self.items.pop(itemName)
-                foundItems = itemName
+                print(f"\n\t{item[0].upper} added to your inventory")
+                self.items.remove(item)
+                foundItems = item
+                break
+                # print(player1.inventory)
             
             elif choice == 'n':
-                print(f"You didn't take the item")
+                print(f"\n\tYou didn't take the item")
+                break
 
             else:
-                print(f"Bad panda! =(")
+                print(f"\nBad panda! =(")
         return foundItems
 
     def __repr__(self):

@@ -20,7 +20,7 @@ the distance, but there is no way across the chasm.""", []),
     'narrow':   Room("narrow", "Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air.""", ["coin", "sword"]),
 
-    'treasure': Room("treasure", "Treasure Chamber", """You've found the long-lost treasure
+    'treasure': Room("treasure room", "Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""", []),
 }
@@ -59,11 +59,14 @@ room['treasure'].s_to = room['narrow']
 
 
 ###### VERSION 3 - figured out how to dynamically move around teh rooms
-current_player = input(f"\n Enter your name to start the game!")
+current_player = input(f"\n Enter your name to start the game: ")
 player1 = Player(current_player, room["outside"], [])
 
-direction = input(f"""Please enter a direction:
-[N]orth, [E]ast, [S]outh, [W]est, [Look], [I]nventory, [Q]uit:""")
+print(f"""\n\t You're in the {room['outside'].name}
+\n\t {room['outside'].description}""")
+
+direction = input(f"""\nPlease enter a direction:
+[N]orth, [E]ast, [S]outh, [W]est, [Look], [I]nventory, [D]rop, [Q]uit:""")
 Dir = direction.lower().strip()
 
 currentRoom = "outside"
@@ -72,20 +75,33 @@ while not Dir == 'q':
     if Dir == "n" or Dir == "e" or Dir == "s" or Dir == "w":
         try:
             dirCall = (f"{Dir}_to")
+            print(f"\n")
             print(getattr(room[currentRoom], dirCall))
-
             currentRoom = getattr(room[currentRoom], dirCall).roomID
-
         except AttributeError:
-            print(f"You can't go that way!")
-    
-    elif Dir == 'l':
-        grabbedItems = room[currentRoom].look()
-        for item in grabbedItems:
-            player1.inventory.append(item)
+            print(f"\n You can't go that way!")
 
-    direction = input(f"""Please enter a direction:
-[n], [e], [s], or [w] or [q] to quit:""")
+    elif Dir == 'l':
+        if len(room[currentRoom].items):
+            grabbedItems = room[currentRoom].look()
+            # print(grabbedItems)
+            # for item in grabbedItems:
+            player1.inventory.append(grabbedItems)
+            
+            print(f"\n\t{player1.inventory} is in your inventory.")
+        else:
+            print(f"\nSorry no items here!")
+
+    elif Dir == 'i':
+        player1.get_inventory()
+    
+    elif Dir == 'd':
+        dropped = player1.drop()
+        for item in dropped:
+            room[currentRoom].items.append(item)
+
+    direction = input(f"""\n Please enter a direction:
+[N]orth, [E]ast, [S]outh, [W]est, [Look], [I]nventory, [D]rop, [Q]uit: """)
     Dir = direction.lower().strip()
 
 
